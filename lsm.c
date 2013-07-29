@@ -62,7 +62,7 @@ disable_security_bprm_set_creds(void*(*address_converted)(void *address, void *b
   return 0;
 }
 
-#ifdef MOLE_PLUGIN_STATIC_LINK
+#ifdef MOLE_PLOUGH_PLUGIN_STATIC_LINK
 static
 #endif
 mole_plough_plugin MOLE_PLOUGH_PLUGIN = {
@@ -70,6 +70,6 @@ mole_plough_plugin MOLE_PLOUGH_PLUGIN = {
   .disable_exec_security_check = disable_security_bprm_set_creds,
 };
 
-#ifdef MOLE_PLUGIN_STATIC_LINK
+#ifdef MOLE_PLOUGH_PLUGIN_STATIC_LINK
 MOLE_PLOUGH_PLUGIN_DEFINE_GETTER(lsm);
 #endif
