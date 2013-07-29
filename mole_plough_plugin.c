@@ -221,5 +221,6 @@ mole_plough_static_plugin_register(void)
     mole_static_plugin_get = static_plugins[i].getter;
     plugins[i] = mole_static_plugin_get();
   }
+  return plugins;
 }
 #endif
