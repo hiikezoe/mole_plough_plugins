@@ -20,6 +20,7 @@
 #define MOLE_PLOUGH_PLUGIN_H
 
 #include <stddef.h>
+#include <kallsyms_in_memory.h>
 
 #define MOLE_PLOUGH_PLUGIN MOLE_PLOUGH_PLUGIN
 
@@ -43,7 +44,7 @@ typedef struct _mole_plough_plugin {
 typedef mole_plough_plugin* mole_plough_plugins;
 
 mole_plough_plugins *mole_plough_plugin_load_all_plugins(const char *program_path);
-void mole_plough_plugin_resolve_symbols(mole_plough_plugins *handler);
+void mole_plough_plugin_resolve_symbols(kallsyms *kallsyms, mole_plough_plugins *handler);
 int mole_plough_plugin_disable_exec_security_check(mole_plough_plugins *handler,
                                                    void*(*address_converter)(void *target, void *base),
                                                    void *base_address);
@@ -53,8 +54,6 @@ typedef struct _mole_plough_static_plugin {
   const char *name;
   void *getter;
 } mole_plough_static_plugin;
-
-mole_plough_plugins *mole_plough_static_plugin_register(void);
 
 #define MOLE_PLOUGH_PLUGIN_DECLARE_GETTER(name) \
 mole_plough_plugin * mole_plough_plugin_get_ ## name (void);
