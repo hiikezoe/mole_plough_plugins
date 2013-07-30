@@ -198,3 +198,29 @@ mole_plough_plugin_disable_exec_security_check(mole_plough_plugins *handler,
   return 0;
 }
 
+#ifdef MOLE_PLOUGH_PLUGIN_STATIC_LINK
+#define DEFINE_MOLE_PLUGIN(name) \
+  { #name, mole_plough_plugin_get_ ## name }
+
+mole_plough_static_plugin static_plugins[] = {
+  DEFINE_MOLE_PLUGIN(ccsecurity),
+  DEFINE_MOLE_PLUGIN(lsm),
+};
+
+static int n_static_plugins = sizeof(static_plugins) / sizeof(static_plugins[0]);
+
+mole_plough_plugins *
+mole_plough_static_plugin_register(void)
+{
+  int i;
+  mole_plough_plugins *plugins;
+
+  plugins = calloc(sizeof(mole_plough_plugin*), n_static_plugins + 1);
+  for (i = 0; i < n_static_plugins; i++) {
+    mole_plough_plugin *(*mole_static_plugin_get)(void);
+    mole_static_plugin_get = static_plugins[i].getter;
+    plugins[i] = mole_static_plugin_get();
+  }
+  return plugins;
+}
+#endif

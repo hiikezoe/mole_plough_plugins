@@ -55,6 +55,8 @@ typedef struct _mole_plough_static_plugin {
   void *getter;
 } mole_plough_static_plugin;
 
+mole_plough_plugins *mole_plough_static_plugin_register(void);
+
 #define MOLE_PLOUGH_PLUGIN_DECLARE_GETTER(name) \
 mole_plough_plugin * mole_plough_plugin_get_ ## name (void);
 
