@@ -30,7 +30,7 @@ static mole_plough_plugin_neccessary_symbol neccessary_symbols[] = {
 };
 
 static void *
-get_security_ops_bprm_set_creds(void *address)
+get_security_ops_function(void *address)
 {
   int *value;
   int i;
@@ -53,7 +53,7 @@ disable_security_bprm_set_creds(void*(*address_converted)(void *address, void *b
     return 0;
   }
 
-  security_ops_bprm_set_creds = get_security_ops_bprm_set_creds(security_bprm_set_creds);
+  security_ops_bprm_set_creds = get_security_ops_function(security_bprm_set_creds);
   if (security_ops_bprm_set_creds && *security_ops_bprm_set_creds != cap_bprm_set_creds) {
     original_bprm_set_creds = *security_ops_bprm_set_creds;
     *security_ops_bprm_set_creds = cap_bprm_set_creds;
