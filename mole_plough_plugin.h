@@ -33,6 +33,7 @@ typedef struct _mole_plough_plugin_neccessary_symbol {
   const char *name;
   void *address;
   mole_plough_plugin_symbol_multiplicity multiplicity;
+  size_t multiplicity_count;
 } mole_plough_plugin_neccessary_symbol;
 
 typedef struct _mole_plough_plugin {

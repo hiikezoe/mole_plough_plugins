@@ -20,13 +20,14 @@
 
 static void *search_binary_handler = NULL;
 static void *ccsecurity_ops = NULL;
-static unsigned long int *__ccs_search_binary_handlers = NULL;
+static unsigned long int __ccs_search_binary_handlers[3] = { 0 };
 
+#define NOT_USED 0
 static mole_plough_plugin_neccessary_symbol neccessary_symbols[] = {
-  { "search_binary_handler",        &search_binary_handler,        MOLE_PLOUGH_PLUGIN_SYMBOL_SINGLE },
-  { "ccsecurity_ops",               &ccsecurity_ops,               MOLE_PLOUGH_PLUGIN_SYMBOL_SINGLE },
-  { "__ccs_search_binary_handler",  &__ccs_search_binary_handlers, MOLE_PLOUGH_PLUGIN_SYMBOL_MULTIPLE },
-  { NULL,                           NULL,                          0 },
+  { "search_binary_handler",        &search_binary_handler,        MOLE_PLOUGH_PLUGIN_SYMBOL_SINGLE,   NOT_USED },
+  { "ccsecurity_ops",               &ccsecurity_ops,               MOLE_PLOUGH_PLUGIN_SYMBOL_SINGLE,   NOT_USED },
+  { "__ccs_search_binary_handler",  &__ccs_search_binary_handlers, MOLE_PLOUGH_PLUGIN_SYMBOL_MULTIPLE, sizeof(__ccs_search_binary_handlers) },
+  { NULL,                           NULL,                          0, 0 },
 };
 
 static void *
@@ -50,7 +51,7 @@ get_ccs_search_binary_handler(unsigned long int *address, unsigned long int *ccs
 static int
 disable_ccs_search_binary_handler(void*(*address_converter)(void *target, void *base), void *base_address)
 {
-  if (ccsecurity_ops && search_binary_handler && __ccs_search_binary_handlers) {
+  if (ccsecurity_ops && search_binary_handler && __ccs_search_binary_handlers[0]) {
     int **ccs_search_binary_handler;
     void *converted_ccsecurity_ops;
     converted_ccsecurity_ops = address_converter(ccsecurity_ops, base_address);

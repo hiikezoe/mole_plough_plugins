@@ -165,8 +165,8 @@ mole_plough_plugin_resolve_symbols(kallsyms *kallsyms, mole_plough_plugins *hand
     symbol = handler[i]->neccessary_symbols;
     while (symbol && symbol->name) {
       if (symbol->multiplicity == MOLE_PLOUGH_PLUGIN_SYMBOL_MULTIPLE) {
-        (*((void**)symbol->address)) =
-          (void*)kallsyms_in_memory_lookup_names(kallsyms, symbol->name);
+        kallsyms_in_memory_lookup_names(kallsyms, symbol->name,
+                                        symbol->address, symbol->multiplicity_count);
       } else {
         (*((void**)symbol->address)) =
           (void*)kallsyms_in_memory_lookup_name(kallsyms, symbol->name);

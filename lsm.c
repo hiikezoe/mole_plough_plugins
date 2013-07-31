@@ -24,9 +24,9 @@ static void *original_bprm_set_creds = NULL;
 static void **security_ops_bprm_set_creds = NULL;
 
 static mole_plough_plugin_neccessary_symbol neccessary_symbols[] = {
-  { "security_bprm_set_creds", &security_bprm_set_creds, MOLE_PLOUGH_PLUGIN_SYMBOL_SINGLE },
-  { "cap_bprm_set_creds",      &cap_bprm_set_creds,      MOLE_PLOUGH_PLUGIN_SYMBOL_SINGLE },
-  { NULL,                      NULL,                     0}
+  { "security_bprm_set_creds", &security_bprm_set_creds, MOLE_PLOUGH_PLUGIN_SYMBOL_SINGLE, 0 },
+  { "cap_bprm_set_creds",      &cap_bprm_set_creds,      MOLE_PLOUGH_PLUGIN_SYMBOL_SINGLE, 0 },
+  { NULL,                      NULL,                     0, 0}
 };
 
 static void *
