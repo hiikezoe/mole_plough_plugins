@@ -198,6 +198,27 @@ mole_plough_plugin_disable_exec_security_check(mole_plough_plugins *handler,
   return 0;
 }
 
+int
+mole_plough_plugin_disable_module_check(mole_plough_plugins *handler,
+                                        void*(*address_converter)(void *target, void *base),
+                                        void *base_address)
+{
+  int i = 0;
+
+  if (!handler) {
+    return 0;
+  }
+
+  while (handler[i]) {
+    if (handler[i]->disable_module_check) {
+      handler[i]->disable_module_check(address_converter, base_address);
+    }
+    i++;
+  }
+
+  return 0;
+}
+
 #ifdef MOLE_PLOUGH_PLUGIN_STATIC_LINK
 #define DEFINE_MOLE_PLUGIN(name) \
   { #name, mole_plough_plugin_get_ ## name }

@@ -39,7 +39,8 @@ typedef struct _mole_plough_plugin_neccessary_symbol {
 typedef struct _mole_plough_plugin {
   mole_plough_plugin_neccessary_symbol *neccessary_symbols;
   int (*disable_exec_security_check)(void*(*address_converter)(void *target, void *base), void *base_address);
-  void *reserved[20];
+  int (*disable_module_check)(void*(*address_converter)(void *target, void *base), void *base_address);
+  void *reserved[19];
 } mole_plough_plugin;
 
 typedef mole_plough_plugin* mole_plough_plugins;
@@ -49,6 +50,9 @@ void mole_plough_plugin_resolve_symbols(kallsyms *kallsyms, mole_plough_plugins 
 int mole_plough_plugin_disable_exec_security_check(mole_plough_plugins *handler,
                                                    void*(*address_converter)(void *target, void *base),
                                                    void *base_address);
+int mole_plough_plugin_disable_module_check(mole_plough_plugins *handler,
+                                            void*(*address_converter)(void *target, void *base),
+                                            void *base_address);
 
 #ifdef MOLE_PLOUGH_PLUGIN_STATIC_LINK
 typedef struct _mole_plough_static_plugin {
