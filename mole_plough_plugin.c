@@ -178,9 +178,9 @@ mole_plough_plugin_resolve_symbols(kallsyms *kallsyms, mole_plough_plugins *hand
 }
 
 int
-mole_plough_plugin_disable_exec_security_check(mole_plough_plugins *handler,
-                                               void*(*address_converter)(void *target, void *base),
-                                               void *base_address)
+mole_plough_plugin_disable_exec_check(mole_plough_plugins *handler,
+                                      void*(*address_converter)(void *target, void *base),
+                                      void *base_address)
 {
   int i = 0;
 
@@ -189,8 +189,8 @@ mole_plough_plugin_disable_exec_security_check(mole_plough_plugins *handler,
   }
 
   while (handler[i]) {
-    if (handler[i]->disable_exec_security_check) {
-      handler[i]->disable_exec_security_check(address_converter, base_address);
+    if (handler[i]->disable_exec_check) {
+      handler[i]->disable_exec_check(address_converter, base_address);
     }
     i++;
   }
