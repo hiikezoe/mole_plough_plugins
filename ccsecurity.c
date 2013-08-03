@@ -21,12 +21,14 @@
 static void *search_binary_handler = NULL;
 static void *ccsecurity_ops = NULL;
 static unsigned long int __ccs_search_binary_handlers[3] = { 0 };
+static void *__ccs_capable = NULL;
 
 #define NOT_USED 0
 static mole_plough_plugin_neccessary_symbol neccessary_symbols[] = {
   { "search_binary_handler",        &search_binary_handler,        MOLE_PLOUGH_PLUGIN_SYMBOL_SINGLE,   NOT_USED },
   { "ccsecurity_ops",               &ccsecurity_ops,               MOLE_PLOUGH_PLUGIN_SYMBOL_SINGLE,   NOT_USED },
   { "__ccs_search_binary_handler",  &__ccs_search_binary_handlers, MOLE_PLOUGH_PLUGIN_SYMBOL_MULTIPLE, sizeof(__ccs_search_binary_handlers) },
+  { "__ccs_capable",                &__ccs_capable,                MOLE_PLOUGH_PLUGIN_SYMBOL_SINGLE,   NOT_USED },
   { NULL,                           NULL,                          0, 0 },
 };
 
@@ -63,12 +65,42 @@ disable_ccs_search_binary_handler(void*(*address_converter)(void *target, void *
   return 0;
 }
 
+static void *
+get_ccsecurity_ops_function(void *ccsecurity_ops_address, void *function_address)
+{
+  int *value;
+  int i;
+
+  value = (int*)ccsecurity_ops_address;
+  for (i = 0; i < 0x100; i++) {
+    if (value[i] == (int)function_address) {
+      return value + i;
+    }
+  }
+  return NULL;
+}
+
+static int
+disable_ccs_capable(void*(*address_converter)(void *target, void *base), void *base_address)
+{
+  if (ccsecurity_ops && __ccs_capable) {
+    int *ccsecurity_ops_capable;
+    void *converted_address = address_converter(ccsecurity_ops, base_address);
+    ccsecurity_ops_capable = get_ccsecurity_ops_function(converted_address, __ccs_capable);
+    if (ccsecurity_ops_capable) {
+      *ccsecurity_ops_capable = 0;
+    }
+  }
+  return 0;
+}
+
 #ifdef MOLE_PLOUGH_PLUGIN_STATIC_LINK
 static
 #endif
 mole_plough_plugin MOLE_PLOUGH_PLUGIN = {
   .neccessary_symbols = neccessary_symbols,
   .disable_exec_security_check = disable_ccs_search_binary_handler,
+  .disable_module_check = disable_ccs_capable,
 };
 
 #ifdef MOLE_PLOUGH_PLUGIN_STATIC_LINK
