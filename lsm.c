@@ -67,7 +67,7 @@ static
 #endif
 mole_plough_plugin MOLE_PLOUGH_PLUGIN = {
   .neccessary_symbols = neccessary_symbols,
-  .disable_exec_security_check = disable_security_bprm_set_creds,
+  .disable_exec_check = disable_security_bprm_set_creds,
 };
 
 #ifdef MOLE_PLOUGH_PLUGIN_STATIC_LINK

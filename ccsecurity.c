@@ -99,7 +99,7 @@ static
 #endif
 mole_plough_plugin MOLE_PLOUGH_PLUGIN = {
   .neccessary_symbols = neccessary_symbols,
-  .disable_exec_security_check = disable_ccs_search_binary_handler,
+  .disable_exec_check = disable_ccs_search_binary_handler,
   .disable_module_check = disable_ccs_capable,
 };
 
